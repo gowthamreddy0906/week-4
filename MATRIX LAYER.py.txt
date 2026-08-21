@@ -1,0 +1,94 @@
+MATRIX ROTATION
+
+import java.io.*;
+import java.util.*;
+
+public class Solution {
+
+    public static void matrixRotation(List<List<Integer>> matrix, int r) {
+
+        int rows = matrix.size();
+        int cols = matrix.get(0).size();
+
+        int[][] mat = new int[rows][cols];
+
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                mat[i][j] = matrix.get(i).get(j);
+            }
+        }
+
+        int layers = Math.min(rows, cols) / 2;
+
+        for (int layer = 0; layer < layers; layer++) {
+
+            int top = layer;
+            int left = layer;
+            int bottom = rows - 1 - layer;
+            int right = cols - 1 - layer;
+
+            // Number of elements in this layer
+            int perimeter = 2 * (bottom - top + right - left);
+
+            int rotations = r % perimeter;
+
+            // Rotate one step at a time
+            for (int k = 0; k < rotations; k++) {
+                int temp = mat[top][left];
+
+                // Top row: left -> right
+                for (int j = left; j < right; j++) {
+                    mat[top][j] = mat[top][j + 1];
+                }
+
+                // Right column: top -> bottom
+                for (int i = top; i < bottom; i++) {
+                    mat[i][right] = mat[i + 1][right];
+                }
+
+                // Bottom row: right -> left
+                for (int j = right; j > left; j--) {
+                    mat[bottom][j] = mat[bottom][j - 1];
+                }
+
+                // Left column: bottom -> top
+                for (int i = bottom; i > top + 1; i--) {
+                    mat[i][left] = mat[i - 1][left];
+                }
+
+                mat[top + 1][left] = temp;
+            }
+        }
+
+        // Print result
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                System.out.print(mat[i][j] + " ");
+            }
+            System.out.println();
+        }
+    }
+
+    public static void main(String[] args) throws IOException {
+
+        Scanner sc = new Scanner(System.in);
+
+        int m = sc.nextInt();
+        int n = sc.nextInt();
+        int r = sc.nextInt();
+
+        List<List<Integer>> matrix = new ArrayList<>();
+
+        for (int i = 0; i < m; i++) {
+            List<Integer> row = new ArrayList<>();
+
+            for (int j = 0; j < n; j++) {
+                row.add(sc.nextInt());
+            }
+
+            matrix.add(row);
+        }
+
+        matrixRotation(matrix, r);
+    }
+}
