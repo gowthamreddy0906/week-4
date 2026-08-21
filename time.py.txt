@@ -1,0 +1,28 @@
+time conversion
+
+import java.util.*;
+
+public class Solution {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        String s = sc.next();
+
+        String period = s.substring(8); // AM or PM
+        int hour = Integer.parseInt(s.substring(0, 2));
+        String rest = s.substring(2, 8);
+
+        if (period.equals("AM")) {
+            if (hour == 12) {
+                System.out.println("00" + rest);
+            } else {
+                System.out.println(String.format("%02d", hour) + rest);
+            }
+        } else { // PM
+            if (hour == 12) {
+                System.out.println("12" + rest);
+            } else {
+                System.out.println((hour + 12) + rest);
+            }
+        }
+    }
+}
